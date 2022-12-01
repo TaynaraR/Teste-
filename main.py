@@ -8,9 +8,8 @@ sw = 800
 sh = 800
 
 # adicionando imagens
-bg = pygame.image.load('asteroidsPics/starbg.png')
+bg = pygame.image.load('asteroidsPics/fundo.png')
 playerRocket = pygame.image.load('asteroidsPics/nave.png')
-estrela = pygame.image.load('asteroidsPics/estrela.png')
 asteroid50 = pygame.image.load('asteroidsPics/asteroid50.png')
 asteroid100 = pygame.image.load('asteroidsPics/asteroid100.png')
 asteroid150 = pygame.image.load('asteroidsPics/asteroid150.png')
@@ -108,7 +107,7 @@ class Bala(object):
     def draw(self, ganhar):
         pygame.draw.rect(ganhar, (255, 255, 255), [self.x, self.y, self.w, self.h])
 
-# Quando a nave sair da tela ela retorna pelo outro lado 
+# Quando os asteroids sairem da tela ela retorna pelo outro lado 
 
     def checkOffScreen(self):
         if self.x < -50 or self.x > sw or self.y > sh or self.y < -50:
@@ -142,28 +141,6 @@ class Asteroid(object):
     def draw(self, ganhar):
         ganhar.blit(self.image, (self.x, self.y))
 
-# funções da estrela
-class Estrela(object):
-    def __init__(self):
-        self.img = estrela
-        self.w = self.img.get_width()
-        self.h = self.img.get_height()
-        self.ranPoint = random.choice([(random.randrange(0, sw - self.w), random.choice([-1 * self.h - 5, sh + 5])),
-                                       (random.choice([-1 * self.w - 5, sw + 5]), random.randrange(0, sh - self.h))])
-        self.x, self.y = self.ranPoint
-        if self.x < sw//2:
-            self.xdir = 1
-        else:
-            self.xdir = -1
-        if self.y < sh//2:
-            self.ydir = 1
-        else:
-            self.ydir = -1
-        self.xv = self.xdir * 2
-        self.yv = self.ydir * 2
-
-    def draw(self, ganhar):
-        ganhar.blit(self.img, (self.x, self.y))
 
 
 def redrawGameWindow():
@@ -181,8 +158,7 @@ def redrawGameWindow():
         a.draw(ganhar)
     for b in playerBalas:
         b.draw(ganhar)
-    for s in estrelas:
-        s.draw(ganhar)
+   
    
 
     if rapidFire:
@@ -201,20 +177,19 @@ player = Player()
 playerBalas = []
 asteroids = []
 count = 0
-estrelas = []
+
 
 run = True
 
 while run:
     
-    timer.tick(60)
+    timer.tick(50)
     count += 1
     if not fimdejogo:
         if count % 50 == 0:
             ran = random.choice([1,1,1,2,2,3])
             asteroids.append(Asteroid(ran))
-        if count % 1000 == 0:
-            estrelas.append(estrela())
+        
         
 
 # ao acertar o asteroid ele ganha uma pontuação 
@@ -280,20 +255,9 @@ while run:
                         playerBalas.pop(playerBalas.index(b))
                         break
 
-        for s in estrelas:
-            s.x += s.xv
-            s.y += s.yv
-            if s.x < -100 - s.w or s.x > sw + 100 or s.y > sh + 100 or s.y < -100 - s.h:
-                estrelas.pop(estrelas.index(s))
-                break
-            for b in playerBalas:
-                if (b.x >= s.x and b.x <= s.x + s.w) or b.x + b.w >= s.x and b.x + b.w <= s.x + s.w:
-                    if (b.y >= s.y and b.y <= s.y + s.h) or b.y + b.h >= s.y and b.y + b.h <= s.y + s.h:
-                        rapidFire = True
-                        rfStart = count
-                        estrelas.pop(estrelas.index(s))
-                        playerBalas.pop(playerBalas.index(b))
-                        break
+        
+           
+         
 
         if vidas <= 0:
             fimdejogo = True
@@ -336,7 +300,7 @@ while run:
                     fimdejogo = False
                     vidas = 3
                     asteroids.clear()
-                    estrelas.clear()
+                    
                     if pontuacao > maximapontuacao:
                         maximapontuacao = pontuacao
                     pontuacao = 0
