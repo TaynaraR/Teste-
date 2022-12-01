@@ -3,7 +3,7 @@ import math
 import random
 
 pygame.init()
-""""""
+
 sw = 800
 sh = 800
 
