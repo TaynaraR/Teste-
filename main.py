@@ -254,10 +254,7 @@ while run:
                         asteroids.pop(asteroids.index(a))
                         playerBalas.pop(playerBalas.index(b))
                         break
-
-        
-           
-         
+  
 
         if vidas <= 0:
             fimdejogo = True
@@ -289,10 +286,8 @@ while run:
                 if not fimdejogo:
                     if not rapidFire:
                         playerBalas.append(Bala())
-                        
-            if event.key == pygame.K_m:
-                if isSoundOn:
-                            shoot.play()
+                
+                            
             if event.key == pygame.K_m:
                 isSoundOn = not isSoundOn
             if event.key == pygame.K_TAB:
